@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><title>마법 약국 대모험</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--y:#fde047}
+*{box-sizing:border-box}body{margin:0;font-family:"Jua","Noto Sans KR",sans-serif;background:radial-gradient(circle at 20% 0,#4c1d95,#1e1b4b 50%,#0f172a);color:#f5f3ff;min-height:100vh}
+.stars{position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 120px 80px,#fde047,transparent),radial-gradient(1.5px 1.5px at 200px 150px,#fff,transparent);background-size:220px 200px;animation:tw 4s infinite alternate;opacity:.6}
+@keyframes tw{to{opacity:.2}}
+header{text-align:center;padding:14px 10px 4px}
+h1{margin:0;font-size:clamp(26px,6vw,42px);background:linear-gradient(90deg,#fde047,#f0abfc,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hud{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}.hud span{background:#ffffff1a;border:2px solid #ffffff33;border-radius:99px;padding:4px 14px}
+nav{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:6px}
+nav button,.btn{font:inherit;font-size:17px;border:0;border-radius:16px;padding:10px 16px;cursor:pointer;background:#ffffff1f;color:#fff}
+nav button.on,.btn{background:linear-gradient(135deg,#8b5cf6,#ec4899);box-shadow:0 4px 0 #581c87}.btn:active{transform:translateY(3px);box-shadow:none}
+main{max-width:900px;margin:auto;padding:10px 14px 40px;position:relative}
+section{display:none;background:#ffffff14;border:2px solid #ffffff2a;border-radius:24px;padding:18px}section.on{display:block;animation:pop .4s}
+@keyframes pop{from{transform:scale(.95);opacity:0}}
+h2{margin:0 0 8px;color:var(--y)}label{display:block;margin:8px 0 3px;color:#c4b5fd}
+input[type=text],textarea,select{font:inherit;padding:8px;border-radius:12px;border:2px solid #7c3aed;background:#1e1b4b;color:#fff}input[type=text],textarea{width:100%}textarea{min-height:60px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.card{background:#fffbeb;color:#422006;border-radius:18px;padding:14px;border:4px dashed #d97706}.card h3{margin:0 0 6px;text-align:center;color:#92400e}.card p{margin:4px 0}
+.sw{display:inline-block;width:30px;height:30px;border-radius:50%;border:3px solid #fff;cursor:pointer;margin:2px}
+.tag{display:inline-block;padding:2px 10px;border-radius:99px;background:#facc15;color:#422006;margin-right:4px}
+.q{font-size:20px;line-height:1.5;margin:10px 0}.opt{display:block;width:100%;text-align:left;margin:7px 0;font:inherit;font-size:18px;padding:12px;border-radius:14px;border:3px solid #7c3aed;background:#312e81;color:#fff;cursor:pointer}
+.opt:hover{background:#4338ca}.opt.ok{background:#16a34a;border-color:#bbf7d0}.opt.no{background:#be123c;animation:sh .3s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.hint{background:#fde04733;border-left:5px solid var(--y);padding:8px 12px;border-radius:8px;margin:8px 0}
+.step{border-left:6px solid #a78bfa;padding-left:12px;margin:14px 0}.step h3{margin:0;color:#67e8f9}
+.fx{position:fixed;font-size:30px;pointer-events:none;animation:fl 1.2s forwards;z-index:9}@keyframes fl{to{transform:translateY(-160px) rotate(40deg);opacity:0}}
+.mon{text-align:center;font-size:84px;animation:bob 1.2s infinite alternate}.mon.big{font-size:110px}@keyframes bob{to{transform:translateY(-12px) rotate(5deg)}}
+.bar{height:16px;background:#0006;border-radius:9px;overflow:hidden;border:2px solid #fff4}.bar i{display:block;height:100%;background:linear-gradient(90deg,#f43f5e,#fb923c);transition:.4s}
+.row{margin:8px 0;line-height:2.2}.chip{display:inline-block;background:#facc15;color:#422006;border-radius:99px;padding:2px 12px;margin:3px}.good{outline:3px solid #4ade80}.bad{outline:3px solid #fb7185}
+
+/* ===== 몽환 글래스 테마 ===== */
+body{background:linear-gradient(120deg,#2e1065,#1e1b4b,#134e4a,#4a044e,#1e1b4b);background-size:300% 300%;background-attachment:fixed;animation:aur 22s ease infinite}
+@keyframes aur{50%{background-position:100% 50%}}
+.stars{background:none;opacity:1;animation:none;overflow:hidden;z-index:0}
+.sp{position:absolute;border-radius:50%;background:#fff;box-shadow:0 0 8px 2px var(--c);opacity:.2;animation:tw2 var(--d) ease-in-out infinite var(--dl)}
+.sp.st{border-radius:0;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);box-shadow:none;background:var(--c)}
+@keyframes tw2{0%,100%{opacity:.1;transform:scale(.5) translateY(0)}50%{opacity:1;transform:scale(1.3) translateY(-14px)}}
+header,nav,main{position:relative;z-index:1}
+h1{background-size:200% 100%;animation:shm 5s linear infinite;filter:drop-shadow(0 0 14px #f0abfc99)}@keyframes shm{to{background-position:200% 0}}
+section,.card,.hud span{backdrop-filter:blur(14px) saturate(170%);-webkit-backdrop-filter:blur(14px) saturate(170%)}
+section{background:linear-gradient(135deg,#ffffff2e,#ffffff0d);border:1.5px solid #ffffff4d}
+section.on{animation:pop .4s,gl 4s ease-in-out .4s infinite}
+@keyframes gl{0%,100%{box-shadow:0 10px 40px #0007,inset 0 1px 0 #fff6,0 0 24px #a78bfa44}50%{box-shadow:0 10px 40px #0007,inset 0 1px 0 #fff6,0 0 60px #f0abfc77}}
+.card{background:linear-gradient(135deg,#fffbebe8,#fde68acc);border:3px dashed #f59e0bcc;animation:gl 4s ease-in-out infinite}
+.hud span{background:linear-gradient(135deg,#ffffff33,#ffffff10);box-shadow:0 0 16px #c084fc66,inset 0 1px 0 #fff6}
+.btn,nav button{position:relative;overflow:hidden;background:linear-gradient(145deg,#c4b5fdaa,#ec4899aa);border:1.5px solid #ffffff77;backdrop-filter:blur(8px);text-shadow:0 1px 4px #0007;box-shadow:0 6px 0 #4c1d95bb,0 0 14px #c084fc99,inset 0 2px 0 #fff8,inset 0 -8px 14px #0003;transition:transform .25s cubic-bezier(.34,1.8,.5,1);animation:pls 3s ease-in-out infinite}
+nav button:not(.on){background:linear-gradient(145deg,#ffffff40,#ffffff14);animation:none;box-shadow:0 5px 0 #1e1b4b99,0 0 10px #a78bfa44,inset 0 2px 0 #fff6}
+@keyframes pls{0%,100%{box-shadow:0 6px 0 #4c1d95bb,0 0 12px #c084fc88,inset 0 2px 0 #fff8,inset 0 -8px 14px #0003}50%{box-shadow:0 6px 0 #4c1d95bb,0 0 30px #f0abfccc,inset 0 2px 0 #fff8,inset 0 -8px 14px #0003}}
+.btn::after,nav button::after{content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(100deg,transparent,#fffa,transparent);transform:skewX(-20deg);transition:left .6s}
+.btn:hover::after,nav button:hover::after{left:140%}
+.btn:hover,nav button:hover,.opt:hover:not(:disabled),.sw:hover{transform:translateY(-6px) scale(1.12);animation:jly .65s;box-shadow:0 12px 0 #4c1d95,0 0 40px #f0abfc,inset 0 2px 0 #fff9;filter:brightness(1.2)}
+@keyframes jly{0%{transform:scale(1)}30%{transform:scale(1.22,.82)}50%{transform:scale(.9,1.16)}70%{transform:scale(1.12,.94)}100%{transform:translateY(-6px) scale(1.12)}}
+.btn:active,nav button:active,.opt:active:not(:disabled){transform:scale(.9,.84) translateY(3px)!important;box-shadow:0 1px 0 #4c1d95,0 0 20px #fff!important;transition:none}
+.opt{background:linear-gradient(135deg,#6366f155,#312e8199);backdrop-filter:blur(8px);border:2px solid #c4b5fd99;box-shadow:0 5px 0 #1e1b4bcc,0 0 14px #8b5cf655,inset 0 1px 0 #fff4;transition:transform .25s cubic-bezier(.34,1.8,.5,1)}
+.opt.ok{background:linear-gradient(135deg,#22c55ecc,#16a34acc);box-shadow:0 0 28px #4ade80}.opt.no{background:#be123ccc}
+input[type=text],textarea,select{background:#1e1b4b99;backdrop-filter:blur(6px);border:1.5px solid #c4b5fd88;transition:.3s}input:focus,textarea:focus,select:focus{outline:0;box-shadow:0 0 20px #f0abfc;border-color:#f0abfc}
+.hint{background:linear-gradient(90deg,#fde04744,#fde04711);backdrop-filter:blur(6px)}
+.mon{filter:drop-shadow(0 0 20px #f0abfc)}
+.ring{position:fixed;width:20px;height:20px;margin:-10px;border:3px solid #fff;border-radius:50%;box-shadow:0 0 16px #f0abfc,inset 0 0 10px #f0abfc;animation:rg .6s forwards;pointer-events:none;z-index:99}@keyframes rg{to{transform:scale(6);opacity:0}}
+.bp{position:fixed;width:9px;height:9px;margin:-4px;background:var(--c);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);pointer-events:none;z-index:99;animation:bp .7s ease-out forwards}@keyframes bp{to{transform:translate(var(--dx),var(--dy)) scale(2) rotate(180deg);opacity:0}}
+/* 물약 */
+.pot{display:block;margin:auto;overflow:visible;filter:drop-shadow(0 0 14px var(--gc,#a855f7));animation:flt 4s ease-in-out infinite,pg 3s ease-in-out infinite}
+@keyframes flt{50%{transform:translateY(-8px) rotate(2deg)}}@keyframes pg{0%,100%{filter:drop-shadow(0 0 8px var(--gc,#a855f7))}50%{filter:drop-shadow(0 0 28px var(--gc,#a855f7))}}
+.wv{animation:wv 3s linear infinite}@keyframes wv{to{transform:translateX(60px)}}
+.bb{fill:url(#gb);stroke:#fff;stroke-opacity:.7;stroke-width:.8;animation:bub var(--d) linear infinite var(--dl)}
+@keyframes bub{0%{transform:translate(0,0);opacity:0}10%{opacity:1}50%{transform:translate(var(--x),-70px)}100%{transform:translate(0,-150px);opacity:.2}}
+.shn{animation:shn 5s ease-in-out infinite}@keyframes shn{0%{transform:translateX(-30px)}60%,100%{transform:translateX(220px)}}
+.tw{fill:#fde047;transform-box:fill-box;transform-origin:center;animation:twk 2.5s infinite var(--dl)}@keyframes twk{0%,100%{opacity:.2;transform:scale(.6)}50%{opacity:1;transform:scale(1.6) rotate(40deg)}}
+@media print{.stars{display:none}}
+@media print{body{background:#fff}.stars,header,nav,.no-print{display:none!important}section{display:none!important}#s1{display:block!important}}
+</style></head><body><div class="stars" id="stars"></div>
+<header><h1>🧪 마법 약국 대모험 🧙</h1>
+<div class="hud"><span id="rk"></span><span>⭐ XP <b id="xp">0</b></span><span>🏆 최고 <b id="bs0">0</b></span><button class="btn" id="mu" style="padding:4px 14px">🔇 음악 켜기</button></div></header>
+<nav><button class="on" data-t="s1">🧪 마법약 연구소</button><button data-t="s2">🔍 읽기 탐험</button><button data-t="s3">✏️ 어휘 빈칸</button><button data-t="s4">⚔️ 몬스터 던전</button></nav>
+<main>
+<section id="s1" class="on"><h2>나만의 마법약을 설명해 보자!</h2>
+<p>설명하는 글은 <b>정보를 쉽고 객관적으로</b> 전달하는 글이야. 소비 기한·보관법·주의사항도 꼭 써 보자!</p>
+<div class="grid"><div>
+<label>🪄 약 이름</label><input class="sv" type="text" id="n" value="용기 퐁퐁 물약">
+<label>✨ 효과</label><textarea class="sv" id="e">먹으면 무서움이 사라지고 힘이 나요.</textarea>
+<label>🌿 재료</label><input class="sv" type="text" id="ing" value="무지개 이슬, 달빛 가루">
+<label>🥄 먹는 방법</label><input class="sv" type="text" id="how" value="하루 한 번, 한 스푼">
+<label>📦 보관법</label><input class="sv" type="text" id="keep" value="상자·설명서와 함께 서늘한 곳에">
+<label>📅 소비 기한</label><input class="sv" type="text" id="exp" value="만든 날부터 100일">
+<label>⚠️ 주의사항</label><textarea class="sv" id="warn">남겨 뒀다가 함부로 먹지 않기! 기한이 지나면 폐의약품 수거함에 버려요.</textarea>
+<label>🎨 색칠하기</label><div id="sw"></div>직접 고르기 <input class="sv" type="color" id="col" value="#a855f7">
+<label>액체 양</label><input class="sv" type="range" id="lvl" min="20" max="100" value="70" style="width:100%">
+<label>반짝이</label><div id="gl"></div></div>
+<div><div class="card"><h3 id="cn"></h3>
+<svg class="pot" id="pot" viewBox="-10 -5 140 160" width="200"><defs><clipPath id="cp"><path d="M45 35h30v25l28 50q10 30-18 32H35q-28-2-18-32l28-50z"/></clipPath><clipPath id="lc"><rect width="120" height="150"/></clipPath><linearGradient id="gl2" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#c4b5fd"/><stop offset="1" stop-color="#fff"/></linearGradient><linearGradient id="dp" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></linearGradient><linearGradient id="ck" x1="0" x2="1"><stop offset="0" stop-color="#b45309"/><stop offset=".4" stop-color="#fcd34d"/><stop offset="1" stop-color="#78350f"/></linearGradient><radialGradient id="gb"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity=".1"/></radialGradient></defs><ellipse cx="60" cy="142" rx="48" ry="7" fill="#0006"/><rect x="42" y="12" width="36" height="22" rx="7" fill="url(#ck)"/><path d="M47 17h9" stroke="#fff" stroke-opacity=".7" stroke-width="3" stroke-linecap="round"/><g clip-path="url(#cp)"><rect width="120" height="150" fill="#e0f2fe" opacity=".3"/><g id="lg" transform="translate(0,60)"><rect id="liq" width="120" height="150" fill="#a855f7"/><rect width="120" height="150" fill="url(#dp)"/><g clip-path="url(#lc)"><circle class="bb" cx="30" cy="145" r="3.5" style="--d:3.2s;--dl:0s;--x:6px"/><circle class="bb" cx="48" cy="145" r="2.2" style="--d:2.6s;--dl:0.8s;--x:-5px"/><circle class="bb" cx="62" cy="145" r="4.5" style="--d:3.8s;--dl:1.5s;--x:7px"/><circle class="bb" cx="76" cy="145" r="2.8" style="--d:2.9s;--dl:0.4s;--x:-6px"/><circle class="bb" cx="90" cy="145" r="3.6" style="--d:3.5s;--dl:2s;--x:5px"/><circle class="bb" cx="40" cy="145" r="1.8" style="--d:2.3s;--dl:1.2s;--x:4px"/><circle class="bb" cx="70" cy="145" r="2" style="--d:2.5s;--dl:2.4s;--x:-4px"/><circle class="bb" cx="55" cy="145" r="3" style="--d:3.1s;--dl:0.2s;--x:6px"/></g><path class="wv" d="M-60 0q15-7 30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0v8H-60z" fill="#fff" opacity=".35"/><rect width="120" height="2" fill="#fff" opacity=".85"/></g><g transform="skewX(-18)"><rect class="shn" x="-40" width="14" height="150" fill="#fff" opacity=".3"/></g></g><path d="M45 35h30v25l28 50q10 30-18 32H35q-28-2-18-32l28-50z" fill="none" stroke="url(#gl2)" stroke-width="3.5"/><path d="M26 112q-4 14 6 22" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".75"/><path d="M49 40v18l-12 22" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".6"/><ellipse cx="86" cy="118" rx="3" ry="8" fill="#fff" opacity=".45" transform="rotate(25 86 118)"/><text id="gt" x="60" y="108" text-anchor="middle" font-size="26">✨</text><text class="tw" x="4" y="30" font-size="14" style="--dl:0s">✦</text><text class="tw" x="108" y="48" font-size="12" style="--dl:.8s">✦</text><text class="tw" x="100" y="136" font-size="10" style="--dl:1.6s">✦</text><text class="tw" x="8" y="100" font-size="9" style="--dl:2.1s">✦</text></svg>
+<p><span class="tag">효과</span><span id="ce"></span></p><p><span class="tag">재료</span><span id="ci"></span></p><p><span class="tag">복용</span><span id="ch"></span></p><p><span class="tag">보관</span><span id="ck"></span></p><p><span class="tag">소비 기한</span><span id="cx"></span></p><p><span class="tag" style="background:#fb7185">주의</span><span id="cw"></span></p></div>
+<p class="no-print" style="text-align:center"><button class="btn" id="d1">🎉 완성! (+30 XP)</button> <button class="btn" onclick="print()">🖨️ 인쇄</button></p></div></div></section>
+
+<section id="s2"><h2>🔍 「약, 잘 쓰고 잘 버리는 방법」 읽기 탐험</h2>
+<div class="step"><h3>🚪 읽기 전 — 알맞은 것을 골라요 (알맞지 않은 보기도 섞여 있어요!)</h3><div id="r1"></div></div>
+<div class="step"><h3>🗺️ 읽는 중 ①: 문단마다 중심 내용을 골라요</h3><div id="pg"></div><button class="btn" id="pc">✅ 확인하기 (+5 XP/문단)</button> <span id="pm"></span></div>
+<div class="step"><h3>🗺️ 읽는 중 ②: 글쓴이의 의도, 새로 알게 된 것, 예상 확인</h3><div id="r2"></div></div>
+<div class="step"><h3>🏆 읽은 후 — 내 생각으로 써 봐요!</h3>
+<div class="hint">📝 요약 예시: 약에는 소비 기한이 있어서 상자·설명서와 함께 보관하고, 쓰지 않는 약은 폐의약품 수거함에 버려야 한다. 그래야 환경과 우리의 건강을 지킬 수 있다.</div>
+<label>① 글의 내용을 두세 문장으로 요약해 보세요.</label><textarea class="sv" id="s6"></textarea>
+<div class="hint">🔎 더 알고 싶은 것 예시: 우리 동네 폐의약품 수거함은 어디에 있을까? / 내성균이 생기지 않게 하려면 어떻게 해야 할까?</div>
+<label>② 더 알고 싶은 것을 쓰고 책이나 인터넷에서 찾아보세요.</label><textarea class="sv" id="s7"></textarea>
+<button class="btn" id="d2">✅ 탐험 완료! (+20 XP)</button></div></section>
+
+<section id="s3"><h2>✏️ 어려운 낱말 빈칸 채우기</h2><p>빈칸에 알맞은 낱말을 고르세요. 맞히면 낱말 뜻이 나와요! (+3 XP)</p><div id="vb"></div><button class="btn" id="vc">✅ 확인</button> <button class="btn" id="vs">🔀 다시 섞기</button></section>
+
+<section id="s4"><h2>⚔️ 몬스터 던전 — 끝없는 퀴즈 쇼!</h2><div id="bt"></div></section>
+</main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],shuf=a=>{a=[...a];for(let i=a.length;i>1;){const j=Math.random()*i|0;i--;[a[i],a[j]]=[a[j],a[i]]}return a};
+let S={xp:0,best:0,kills:0,r:{},f:{}};
+try{S=Object.assign(S,JSON.parse(localStorage.getItem('mpa2')||'{}'));S.r=S.r||{};S.f=S.f||{}}catch(e){}
+const save=()=>{try{localStorage.setItem('mpa2',JSON.stringify(S))}catch(e){}};
+function hud(){const R=[[600,'👑 전설의 연금술사'],[250,'🔮 대마법사'],[80,'🧙 마법 약사'],[0,'🐣 견습 약사']];$('#rk').textContent=R.find(r=>S.xp>=r[0])[1];$('#xp').textContent=S.xp;$('#bs0').textContent=S.best}
+function add(n){S.xp+=n;save();hud()}
+function award(k,n){if(S.r[k])return 0;S.r[k]=1;add(n);return n}
+// 소리
+let ac,mi=0,mt=null;
+function tone(f,d=.12,t='sine',v=.08,s=0){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state=='suspended')ac.resume();const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime+s;o.type=t;o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(v,n);g.gain.exponentialRampToValueAtTime(.001,n+d);o.start(n);o.stop(n+d)}catch(e){}}
+function sfx(k){if(k==1){tone(660,.1);tone(880,.15,'sine',.08,.1)}else if(k==0)tone(180,.25,'sawtooth',.06);else[523,659,784,1047].forEach((f,i)=>tone(f,.2,'square',.05,i*.1))}
+const NT=[523,587,659,784,880,784,659,587];
+$('#mu').onclick=()=>{if(mt){clearInterval(mt);mt=null;$('#mu').textContent='🔇 음악 켜기'}else{$('#mu').textContent='🎵 음악 끄기';mt=setInterval(()=>{tone(NT[mi%8]*(((mi/8)|0)%2?.75:1),.3,'triangle',.035);mi++},300)}};
+function fx(e,t){for(let k=0;k<8;k++){const d=document.createElement('div');d.className='fx';d.textContent=t||['⭐','✨','💜','🎉'][k%4];d.style.left=(e.clientX-60+Math.random()*120)+'px';d.style.top=(e.clientY-20)+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),1200)}}
+$$('nav button').forEach(b=>b.onclick=()=>{$$('nav button,section').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#'+b.dataset.t).classList.add('on')});
+// 연구소
+['#ff6b6b','#facc15','#4ade80','#22d3ee','#a855f7','#f472b6'].forEach(c=>{const s=document.createElement('span');s.className='sw';s.style.background=c;s.onclick=()=>{$('#col').value=c;S.f.col=c;save();up()};$('#sw').appendChild(s)});
+['✨','⭐','❄️','🔥','🌈','💧'].forEach(g=>{const b=document.createElement('button');b.className='btn';b.style.cssText='padding:4px 10px;margin:2px';b.textContent=g;b.onclick=()=>{S.f.gt=g;save();up()};$('#gl').appendChild(b)});
+function up(){$('#cn').textContent='🧪 '+$('#n').value;[['e','ce'],['ing','ci'],['how','ch'],['keep','ck'],['exp','cx'],['warn','cw']].forEach(p=>$('#'+p[1]).textContent=$('#'+p[0]).value);$('#liq').setAttribute('fill',$('#col').value);$('#lg').setAttribute('transform','translate(0,'+(150-$('#lvl').value*.9)+')');$('#pot').style.setProperty('--gc',$('#col').value);$('#gt').textContent=S.f.gt||'✨'}
+$$('.sv').forEach(i=>{if(S.f[i.id]!=null)i.value=S.f[i.id];i.addEventListener('input',()=>{S.f[i.id]=i.value;save();up()})});up();
+$('#d1').onclick=e=>{award('d1',30);fx(e,'🧪');sfx(2)};$('#d2').onclick=e=>{award('d2',20);fx(e,'🏆');sfx(2)};
+// 읽기 객관식 [문제,[보기],정답,해설]
+function mc(el,pre,items){el.innerHTML='';items.forEach((it,k)=>{const d=document.createElement('div');d.innerHTML=`<div class="q">${it[0]}</div>`;const m=document.createElement('div');shuf(it[1].map((_,i)=>i)).forEach(j=>{const b=document.createElement('button');b.className='opt';b.textContent=it[1][j];b.onclick=e=>{if(j==it[2]){b.classList.add('ok');d.querySelectorAll('.opt').forEach(x=>x.disabled=1);const g=award(pre+k,5);m.innerHTML='<div class="hint">✅ '+it[3]+(g?' (+5 XP)':'')+'</div>';sfx(1);fx(e)}else{b.classList.add('no');b.disabled=1;m.innerHTML='<div class="hint">🤔 다시 생각해 봐요!</div>';sfx(0)}};d.appendChild(b)});d.appendChild(m);el.appendChild(d)})}
+mc($('#r1'),'a',[
+["제목 「약, 잘 쓰고 잘 버리는 방법」을 보고 짐작한 내용으로 알맞은 것은?",["약을 알맞게 쓰고 버리는 방법이 나올 것 같다","약을 만드는 로봇 이야기가 나올 것 같다","병원을 짓는 방법이 나올 것 같다"],0,"제목에서 글의 내용을 짐작하는 것이 읽기 전 활동이에요."],
+["'약'에 대해 이미 알고 있는 것을 떠올린 것으로 알맞은 것은?",["감기에 걸렸을 때 약을 먹은 적이 있다","이 글의 중심 내용은 '약을 잘 버리자'이다","'내성균'은 항생제를 견디는 균이다"],0,"아는 것 떠올리기는 읽기 전에 내 경험을 생각하는 거예요. 나머지는 읽은 뒤에 알게 되는 내용이에요."],
+["읽기 전 활동이 아닌 것은?",["제목 보고 내용 짐작하기","내가 아는 것 떠올리기","글을 읽고 한 문장으로 요약하기"],2,"요약하기는 읽은 후 활동이에요."]]);
+const CI=["폐의약품 수거함에 넣어 따로 버려야 한다","약에는 소비 기한이 있다","약은 상자와 설명서를 함께 보관한다","처방 약을 남겨 뒀다가 함부로 먹으면 위험하다","버려진 약은 환경을 오염시키고 물고기를 해친다","항생제가 버려지면 내성균이 생겨 사람에게 돌아온다","약은 비쌀수록 효과가 좋다","약은 냉장고 문에 두면 된다"];
+const PG=["“약은 환경 오염을 일으킬 수 있기 때문에…” (205쪽 1줄)","“약도 우유나 빵처럼 소비 기한이…” (205쪽 9줄)","“그렇다면 약을 어떻게 보관하고…” (205쪽 13줄)","“병원에서 준 처방전으로…” (205쪽 22줄)","“폐의약품 수거의 결과로 모이는…” (206쪽 8줄)","“항생제를 예로 들어 볼까요?” (207쪽 1줄)"];
+const po=shuf(CI.map((_,i)=>i));
+$('#pg').innerHTML=PG.map((p,i)=>`<div class="row">${p}<br><select data-i="${i}"><option value="-1">중심 내용 고르기</option>${po.map(j=>`<option value="${j}">${CI[j]}</option>`).join('')}</select></div>`).join('');
+$('#pc').onclick=e=>{let ok=0,g=0;$$('#pg select').forEach(s=>{const i=+s.dataset.i,c=+s.value==i;s.className=c?'good':'bad';if(c){ok++;g+=award('p'+i,5)}});sfx(ok==6?2:ok?1:0);$('#pm').textContent=ok+' / 6 정답'+(g?' (+'+g+' XP)':'');if(ok==6)fx(e)};
+mc($('#r2'),'b',[
+["글쓴이가 이 글을 쓴 의도(글의 중심 생각)는?",["약을 잘 쓰고 잘 버려서 우리 모두의 건강과 환경을 지키자","항생제를 많이 먹자","물고기를 많이 키우자"],0,"글쓴이는 마지막 문단에서 중심 생각을 정리했어요."],
+["읽는 중 활동으로 알맞지 않은 것은?",["중심 내용 찾기","새롭게 알게 된 것 찾기","더 알고 싶은 것을 인터넷으로 찾아보기"],2,"더 알고 싶은 것 찾아보기는 읽은 후 활동이에요."],
+["이 글에서 새롭게 알게 된 것으로 알맞은 것은?",["약에도 소비 기한이 있다","쓰레기통에 버리면 약은 사라진다","항생제는 많이 쓸수록 좋다"],0,"새롭게 알게 된 것은 글에서 확인한 내용이어야 해요."],
+["예상한 내용이 맞는지 확인하는 말로 알맞은 것은?",["“약 버리는 방법이 나올 것 같았는데 수거함 이야기가 나와서 맞았어.”","“안 읽어도 다 알 것 같아.”","“이 글은 두 문장으로 요약하면…”"],0,"예상과 글의 내용을 비교하는 것이 읽는 중 활동이에요."]]);
+// 어휘 [낱말,뜻,문장]
+const V=[["비치되어","마련해 갖추어 둔(비치되다)","보건소에는 수거함이 ___ 있어요."],["폐의약품","쓰고 남아 버리는 약","쓰지 않는 약은 ___ 수거함에 넣어요."],["수거","거두어 가는 것","모은 약은 ___해서 따로 버려 줘요."],["소비 기한","먹거나 써도 되는 마지막 날","약에도 ___이 있어서 지나면 쓰지 않아요."],["처방전","의사가 약 이름과 양을 적어 준 종이","의사 선생님이 써 준 ___으로 약을 지어요."],["부작용","원래 효과 말고 생기는 나쁜 반응","남은 약을 함부로 먹으면 ___이 생길 수 있어요."],["개봉","봉한 것을 처음 뜯는 것","한 번 ___된 약은 확실한 기한을 알 수 없어요."],["오염","더럽게 물드는 것","약을 함부로 버리면 강물이 ___돼요."],["번식","새끼나 씨를 퍼뜨려 늘어나는 것","약이 물고기의 ___에 영향을 줄 수 있어요."],["항생제","병을 일으키는 균을 죽이는 약","병을 일으키는 균을 죽이는 약은 ___예요."],["내성균","약을 견디게 몸을 바꾼 균","항생제를 견디게 몸을 바꾼 균을 ___이라고 해요."],["후손","몇 대 뒤의 자손","버려진 약은 미래의 ___들에게도 영향을 줘요."],["인류","모든 사람","이건 나 혼자가 아니라 전 ___의 문제예요."],["경고","위험을 미리 알려 주는 것","과학자들이 위험하다고 ___하고 있어요."]];
+function vr(){const bank=shuf(V.map(v=>v[0]));$('#vb').innerHTML='<div>'+bank.map(w=>`<span class="chip">${w}</span>`).join('')+'</div>'+shuf(V).map(v=>{const p=v[2].split('___');return `<div class="row" data-w="${v[0]}">${p[0]}<select><option value="">?</option>${bank.map(w=>`<option>${w}</option>`).join('')}</select>${p[1]} <small></small></div>`}).join('')}
+$('#vc').onclick=e=>{let ok=0,g=0;$$('#vb .row').forEach(r=>{const s=r.querySelector('select'),c=s.value==r.dataset.w;s.className=c?'good':'bad';r.querySelector('small').textContent=c?'💡 '+V.find(v=>v[0]==r.dataset.w)[1]:'';if(c){ok++;g+=award('v'+r.dataset.w,3)}});sfx(ok==14?2:ok?1:0);if(ok==14)fx(e);alert(ok+' / 14 정답!'+(g?' (+'+g+' XP)':''))};
+$('#vs').onclick=vr;vr();
+// 퀴즈
+const Q=[
+[0,"폐의약품 수거함은 어디에 있나요?",["보건소와 대부분의 약국","학교 운동장","편의점","놀이터"],0,"205쪽 3~4째 줄","보건소와 대부분의 약국에 비치되어 있어요."],
+[0,"약도 우유나 빵처럼 ○○ ○○이 있어요. ○○에 알맞은 말은?",["소비 기한","크기 모양","맛 향기","값 이름"],0,"205쪽 9째 줄","약도 소비 기한이 있어요."],
+[0,"더 이상 쓰지 않는 약은 어디에 넣어야 하나요?",["하수구","쓰레기통","폐의약품 수거함","화단"],2,"205쪽 5~6째 줄","수거함에 넣으면 모아서 따로 버려 줘요."],
+[0,"쓰지 않는 약은 아무 곳에나 버려도 된다. (O/X)",["O","X"],1,"205쪽 7~8째 줄","쓰레기통이나 하수구 등 아무 곳에나 버리면 안 돼요."],
+[0,"항생제는 어떤 약인가요?",["키가 크는 약","병을 일으키는 균을 죽이는 약","잠이 오는 약","배고픔을 없애는 약"],1,"207쪽 1~2째 줄","우리 몸에 병을 일으키는 균을 죽이는 약이에요."],
+[0,"'내성'은 무슨 뜻이라고 했나요?",["빨리 달리는 힘","견딜 수 있는 힘","높이 뛰는 힘","멀리 보는 힘"],1,"207쪽 5째 줄","내성이란 '견딜 수 있는 힘'이라는 뜻이에요."],
+[1,"약의 소비 기한이 지나면 어떻게 되나요?",["색이 예뻐진다","약효가 떨어지고 상할 수도 있다","더 잘 낫는다","맛이 달콤해진다"],1,"205쪽 10째 줄","약효가 떨어질 뿐 아니라 상할 수도 있어요."],
+[1,"약 상자나 사용 설명서가 없으면 생기는 문제가 아닌 것은?",["어느 약을 어디에 써야 할지 모른다","소비 기한이 얼마나 남았는지 모른다","약이 저절로 더 강해진다","약을 쓰지 못하게 되기도 한다"],2,"205쪽 15~18째 줄","약이 강해진다는 내용은 없어요."],
+[1,"소비 기한은 어떤 경우에 적용되나요?",["약을 개봉하지 않았을 때만","적절하게 보관했을 경우","햇빛에 두었을 경우","상관없이 항상"],1,"205쪽 20~21째 줄","적절하게 보관했을 경우에 적용돼요."],
+[1,"남겨 둔 처방 약을 다음에 비슷한 증상이라고 함부로 먹으면 위험한 까닭은?",["약이 너무 비싸서","실제 몸 상태가 달라 부작용이 생길 수 있어서","약병이 무거워서","맛이 없어서"],1,"205쪽 23~24째 줄 ~ 206쪽 1~2째 줄","비슷해 보여도 몸 상태가 다를 수 있어 부작용이 생길 수 있어요."],
+[1,"쓰레기통에 약을 버리면 약은 어떻게 되나요?",["사라진다","어디론가 흘러가 환경을 오염시킨다","물고기가 된다","저절로 낫는다"],1,"206쪽 11~12째 줄","쓰레기통에 버린다고 약이 사라지는 건 아니에요."],
+[1,"폐의약품 중 생물들의 번식에 심각한 영향을 줄 수 있는 성분 두 가지는?",["비타민, 칼슘","항생제, 성호르몬","소금, 설탕","물, 기름"],1,"206쪽 8~10째 줄","항생제나 성호르몬이 포함된 약이 있어요."],
+[2,"내성균이 생기는 순서로 알맞은 것은?",["내성균 생김 → 항생제 공격 → 몸을 바꿈","항생제 공격을 자주 받음 → 몸을 바꿈 → 내성균","몸을 바꿈 → 균이 죽음 → 항생제 공격","항생제 공격 → 균이 모두 죽음 → 내성균"],1,"207쪽 2~5째 줄","공격을 자주 받다 보면 죽지 않게 몸을 바꾸고, 이런 균을 내성균이라 해요."],
+[2,"항생제를 많이 쓸수록 어떤 일이 생길 수 있나요?",["병이 절대 안 걸린다","내성균이 많아져 치료제 효과가 없을 수 있다","균이 모두 사라진다","약이 더 싸진다"],1,"207쪽 6~7째 줄","내성균이 많이 생기면 치료제의 효과가 없을 수도 있어요."],
+[2,"207쪽 그림에서 버려진 항생제가 사람에게 돌아오는 길이 아닌 것은?",["항생제가 스며든 땅에서 자란 배추","항생제가 흡수된 땅의 곡식 사료를 먹은 닭","바다에 버려진 항생제를 먹은 물고기","약국의 폐의약품 수거함"],3,"207쪽 그림과 8~10째 줄","수거함은 약을 따로 안전하게 모아 버리는 곳이에요."],
+[2,"'남은 약 모으기'가 물고기만 위한 일이 아닌 까닭은?",["물고기가 약을 좋아해서","버려진 약이 사람에게 어떤 영향을 미칠지 알 수 없다고 과학자들이 경고해서","수거함이 예뻐서","약이 비싸서"],1,"206쪽 14~16째 줄","우리 모두를 위한 거예요."],
+[2,"이 글의 중심 생각으로 가장 알맞은 것은?",["약은 비싸니 아껴 쓰자","약을 잘 쓰고 잘 버리는 것은 우리 모두의 건강과 환경을 지키는 일이다","항생제는 먹지 말자","물고기를 키우자"],1,"207쪽 11~13째 줄","글쓴이가 마지막에 정리한 생각이에요."],
+[2,"약을 잘 보관하는 방법으로 알맞은 것은?",["상자는 버리고 약만 모은다","상자·사용 설명서를 함께 두고, 설명서의 보관법대로 보관한다","여러 약을 섞어 한 통에 담는다","아무 곳에나 둔다"],1,"205쪽 18~20째 줄","상자와 설명서를 함께 보관하고 적힌 보관법대로 해요."]];
+const F=[["쓰지 않는 약은 ___에 넣어요.","폐의약품 수거함","205쪽 5~6째 줄",0],["항생제를 견디게 바뀐 균을 ___이라고 해요.","내성균","207쪽 4~5째 줄",0],["병원에서 준 ___으로 약을 지었어요.","처방전","205쪽 22째 줄",1],["약은 ___와 사용 설명서를 함께 보관해야 해요.","약상자","205쪽 18~19째 줄",1],["약을 함부로 먹으면 ___이 생길 수 있어요.","부작용","205쪽 24줄~206쪽 1줄",1],["하수구로 버려진 약은 ___으로 흘러 들어가요.","강","206쪽 4~5째 줄",0],["항생제와 ___이 환경에 흘러가면 생물의 번식에 영향을 줘요.","성호르몬","206쪽 8~9째 줄",2],["약은 ___이 지나면 약효가 떨어져요.","소비 기한","205쪽 10째 줄",0],["버려진 약은 미래의 ___들에게도 영향을 줄 수 있어요.","후손","207쪽 10째 줄",1],["약을 잘 쓰고 잘 버리는 것은 모두의 ___과 환경을 지키는 일이에요.","건강","207쪽 12~13째 줄",2],["폐의약품 수거함은 보건소와 대부분의 ___에 있어요.","약국","205쪽 3~4째 줄",0],["우리가 버리는 약을 ___들이 먹을 수 있어요.","물고기","206쪽 10째 줄",0],["과학자들은 버려진 약의 영향을 알 수 없다고 ___하고 있어요.","경고","206쪽 15~16째 줄",2],["항생제는 병을 일으키는 ___을 죽이는 약이에요.","균","207쪽 1~2째 줄",0]];
+const AN=[...F.map(f=>f[1]),"하수구","화단","냉장고","장난감","시장","학교"];
+const PL=[...Q.map((q,i)=>({id:'q'+i,l:q[0],g:()=>{const c=q[2][q[3]],o=shuf(q[2]);return{l:q[0],q:q[1],o,a:o.indexOf(c),h:q[4],e:q[5]}}})),...F.map((f,i)=>({id:'f'+i,l:f[3],g:()=>{const o=shuf([f[1],...shuf(AN.filter(x=>x!=f[1])).slice(0,3)]);return{l:f[3],q:f[0],o,a:o.indexOf(f[1]),h:f[2],e:'정답: '+f[1]}}}))];
+const M=[['🦠','내성균'],['🧟','소비기한 좀비'],['🌊','오염 슬라임'],['🗑️','쓰레기 고블린']];let B=null,rc=[];
+function lobby(){$('#bt').innerHTML=`<p>몬스터를 물리치며 끝없이 퀴즈를 풀어요! 틀리면 ❤️가 줄고, 콤보가 쌓이면 점수가 더 커져요. 5단계마다 보스 등장! 👹</p><p>🏆 최고 점수 <b>${S.best}</b> · 처치한 몬스터 <b>${S.kills}</b>마리</p><button class="btn" onclick="start()">⚔️ 모험 시작!</button>`}
+function start(){B={st:1,sc:0,he:5,cb:0};spawn();bq()}
+function spawn(){const b=B.st%5==0;B.mon=b?['👹','약 방치 대마왕']:M[(B.st-1)%4];B.mx=b?5:Math.min(5,3+(B.st/4|0));B.hp=B.mx}
+function pickQ(){const mx=Math.min(2,(B.st-1)/2|0),lv=Math.random()<.6?mx:Math.random()*(mx+1)|0;let c=PL.filter(p=>p.l==lv&&!rc.includes(p.id));if(!c.length){rc=[];c=PL.filter(p=>p.l==lv)}const p=c[Math.random()*c.length|0];rc.push(p.id);if(rc.length>8)rc.shift();return p.g()}
+function bq(){B.q=pickQ();B.t=0;B.h=0;B.done=0;const q=B.q;$('#bt').innerHTML=`<div class="hud"><span id="st"></span></div><div class="mon ${B.st%5==0?'big':''}">${B.mon[0]}</div><div style="text-align:center">${B.mon[1]}</div><div class="bar"><i id="hp"></i></div><div class="q">${q.q}</div><div id="bo"></div><div id="bm"></div><button class="btn" id="bh">💡 힌트</button> <button class="btn" id="bn" style="display:none">다음 ▶</button>`;
+q.o.forEach((x,j)=>{const b=document.createElement('button');b.className='opt';b.textContent=x;b.onclick=e=>ans(j,e);$('#bo').appendChild(b)});
+$('#bh').onclick=()=>{B.h=1;$('#bm').innerHTML='<div class="hint">📖 '+q.h+'을 다시 읽어 봐!</div>'};
+$('#bn').onclick=()=>{if(B.dead){B.dead=0;spawn()}bq()};stat()}
+function stat(){$('#st').innerHTML=`🏰 ${B.st}단계 · 🎯 ${B.sc}점 · 🔥 콤보 ${B.cb} · `+'❤️'.repeat(B.he)+'🖤'.repeat(5-B.he);$('#hp').style.width=Math.max(0,B.hp/B.mx*100)+'%'}
+function ans(j,e){if(B.done)return;const q=B.q,bs=$$('#bo .opt');
+if(j==q.a){B.done=1;bs[j].classList.add('ok');bs.forEach(x=>x.disabled=1);B.cb++;const g=Math.round([10,20,30][q.l]*(B.t?.5:B.h?.7:1)*(1+Math.min(B.cb,6)*.25));B.sc+=g;add(g);B.hp--;sfx(1);fx(e);let m=`✅ +${g}점 · ${q.e} (📖 ${q.h})`;
+if(B.hp<=0){const k=50*B.st;B.sc+=k;add(k);S.kills++;B.he=Math.min(5,B.he+1);sfx(2);m+=`<br>💥 ${B.mon[1]} 처치! +${k}점, ❤️ 회복!`;B.st++;B.dead=1}
+if(B.sc>S.best)S.best=B.sc;save();hud();$('#bm').innerHTML='<div class="hint">'+m+'</div>';$('#bn').style.display='inline-block';stat()}
+else{bs[j].classList.add('no');bs[j].disabled=1;B.t=1;B.cb=0;B.he--;sfx(0);if(B.he<=0)return over();$('#bm').innerHTML='<div class="hint">💢 몬스터의 반격! ❤️ -1 · 💡 힌트를 눌러 봐요</div>';stat()}}
+function over(){$('#bt').innerHTML=`<h2>💀 게임 오버</h2><p>이번 점수 <b>${B.sc}</b>점 · 도달 ${B.st}단계</p><p>🏆 최고 점수 <b>${S.best}</b> · 처치한 몬스터 <b>${S.kills}</b>마리</p><button class="btn" onclick="start()">🔁 다시 도전!</button>`}
+
+(function(){const st=$('#stars'),C=['#fde047','#f0abfc','#67e8f9','#fff','#a78bfa'];for(let i=0;i<46;i++){const e=document.createElement('i'),z=2+Math.random()*5;e.className='sp'+(i%3==0?' st':'');e.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${z+(i%3==0?6:0)}px;height:${z+(i%3==0?6:0)}px;--c:${C[i%5]};--d:${3+Math.random()*5}s;--dl:${-Math.random()*6}s`;st.appendChild(e)}})();
+document.addEventListener('click',e=>{const t=e.target.closest('button,.sw,.opt');if(!t)return;let x=e.clientX,y=e.clientY;if(!e.detail){const r=t.getBoundingClientRect();x=r.left+r.width/2;y=r.top+r.height/2}const g=document.createElement('div');g.className='ring';g.style.left=x+'px';g.style.top=y+'px';document.body.appendChild(g);setTimeout(()=>g.remove(),600);const C=['#fde047','#f0abfc','#67e8f9','#fff'];for(let k=0;k<10;k++){const p=document.createElement('i'),a=k/10*6.283,d=40+Math.random()*40;p.className='bp';p.style.cssText=`left:${x}px;top:${y}px;--c:${C[k%4]};--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px`;document.body.appendChild(p);setTimeout(()=>p.remove(),700)}tone(1100,.05,'triangle',.05);tone(1500,.07,'sine',.04,.04)},true);
+hud();lobby();
+</script></body></html>
